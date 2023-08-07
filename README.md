@@ -36,3 +36,19 @@ npm run build
 You can preview the production build with `npm run preview`.
 
 > To deploy your app, you may need to install an [adapter](https://kit.svelte.dev/docs/adapters) for your target environment.
+
+## TODO
+### Spotify
+- [x] add auth
+- [ ] add redis to store sessions
+- [ ] add middleware to check if token is valid
+- [ ] add login page
+- [ ] add search page
+
+### Youtube
+- [ ] add auth
+- [ ] add redis to store sessions
+- [ ] add middleware to check if token is valid
+- [ ] add login page
+- [ ] add search page
+
