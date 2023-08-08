@@ -2,7 +2,7 @@ import { redirect } from "@sveltejs/kit";
 import { SPOTIFY_CLIENT_ID } from '$env/static/private';
 import { queryString } from "$lib";
 
-const redirect_uri = 'http://localhost:5173/auth/callback';
+const redirect_uri = 'http://localhost:5173/api/auth/callback';
 export function GET() {
 
   const state = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);

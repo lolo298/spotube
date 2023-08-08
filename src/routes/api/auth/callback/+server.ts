@@ -1,10 +1,13 @@
 import { SPOTIFY_CLIENT_ID, SPOTIFY_CLIENT_SECRET } from "$env/static/private";
 import { queryString } from "$lib";
 import { redirect } from "@sveltejs/kit";
-const redirect_uri = 'http://localhost:5173/auth/callback';
+import { v4 as uuid } from 'uuid';
+import redis from '$lib/redis';
+import { isSession } from "$lib/utils";
 
-/** @type {import('./$types').RequestHandler} */
-export async function GET({ url }) {
+const redirect_uri = 'http://localhost:5173/api/auth/callback';
+
+export async function GET({ url, cookies }) {
   const code = url.searchParams.get('code') || null;
   const state = url.searchParams.get('state') || null;
 
@@ -40,8 +43,31 @@ export async function GET({ url }) {
         "Content-Type": "application/x-www-form-urlencoded"
       }
     });
-    const data = await res.json();
-    console.log(data)
-    return new Response(JSON.stringify(data));
+    const data: Session = await res.json();
+
+    if (!isSession(data)) {
+      return new Response(JSON.stringify({ error: 'session not found' }), {
+        status: 401
+      });
+    }
+
+    data.expires_at = Date.now() + data.expires_in;
+
+    const userId = uuid();
+
+    await redis.set(`session:${userId}`, JSON.stringify(data), {
+      EX: 60 * 60 * 24 * 7 // 1 week
+    });
+
+    cookies.set('session', userId, {
+      path: '/',
+      maxAge: 60 * 60 * 24 * 7 // 1 week
+    });
+
+    return new Response(JSON.stringify({sessionId: userId, data: data}),{
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
   }
 }
