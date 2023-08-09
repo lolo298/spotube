@@ -510,3 +510,25 @@ $4
 PXAT
 $13
 1692205839189
+*5
+$3
+SET
+$44
+session:647d625b-5dc7-4496-a436-2ef4c868d75a
+$490
+{"access_token":"BQBHgS63SKEqOCQmHrvr6mO33X5ARBXIdmBrlq0xllgPrdCdTnOOGQb1vsRxxtQrK5jiZYsONoRgrGj1X5q95zhVhcwseRylu390p14xtXmN0qZB3pcy4mTNbbBScMuUgxacp41BIx-ZJBDZMWhpF7lZg1xBEIOuBBzSvVlhcmT3tTE3KGXn0S2KcrktBNMkooScmaFwlX3-cQ9kDw","token_type":"Bearer","expires_in":3600,"refresh_token":"AQAENGE2D1tvjVAJNI9dDbkd7Zzcdl9iWolEwQL-HAmbi84ojxmA6FIOhEuEKkJfI3I493HESlexek_YlWLj_Y5LQOh9uysYeSe7NZq5q_KdY3AzDtlRp1SvG5m3Rwbsax8","scope":"user-read-email user-read-private","expires_at":1691604722510}
+$4
+PXAT
+$13
+1692205922512
+*5
+$3
+SET
+$44
+session:a2b94d36-b90e-45c6-a7ae-40de8e19dc15
+$511
+{"access_token":"BQAh9mEWz9f2nZTBpMk4wTig7KIX1Mhur8kA2qGsCu2Cm1VgC_dvee1h7t6Vjj-gfLLAmxkXl2jwCFOurc47XTqIyU9LTf72yuHoP9oOe6wqa_4yxkeAGasquOqpZdHcsIUoLic_Vfld17q_qjVQTlK8Aj5cML0U5pdtbAQsZJETvjyHaDAesQxs9IbU4Jm9VPTia2eqGi-1KZG9Uw","token_type":"Bearer","expires_in":3600,"refresh_token":"AQDlh6vuZmc0gtBDfwgnNWSkRJEbSxEmLZhHqnPonAgVcj9Ms6F88GSGHReMaUAFoBJ5vTnbqPqitymwNsJwsJgFg3luYjjuMX8l7XGZHjFZybA4ybU5HsgrjYxsjPxc1o0","scope":"user-read-email user-read-private","expires_at":1691605399284,"provider":"spotify"}
+$4
+PXAT
+$13
+1692206599285

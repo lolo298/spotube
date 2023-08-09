@@ -48,6 +48,8 @@ export async function GET({ url, cookies }) {
 
     data.expires_at = Date.now() + (data.expires_in * 1000);
 
+    data.provider = 'spotify';
+
     const userId = uuid();
 
     await redis.set(`session:${userId}`, JSON.stringify(data), {

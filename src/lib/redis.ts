@@ -27,5 +27,15 @@ class RedisClient {
   }
 }
 
+export async function getSession(id: string): Promise<Session | null> {
+  const client = RedisClient.Instance.Client;
+  const session = await client.get(`session:${id}`);
+  if (session === null) {
+    return null;
+  }
+  return JSON.parse(session);
+}
+
+
+
 export default RedisClient.Instance.Client;
-export const counter = RedisClient.Instance.counter;
