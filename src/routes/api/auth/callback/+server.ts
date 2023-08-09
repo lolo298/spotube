@@ -7,6 +7,7 @@ import { isSession } from "$lib/utils";
 
 const redirect_uri = 'http://localhost:5173/api/auth/callback';
 
+/** @type {import('@sveltejs/kit/types/hooks').ServerRequest} */
 export async function GET({ url, cookies }) {
   const code = url.searchParams.get('code') || null;
   const state = url.searchParams.get('state') || null;
@@ -51,7 +52,7 @@ export async function GET({ url, cookies }) {
       });
     }
 
-    data.expires_at = Date.now() + data.expires_in;
+    data.expires_at = Date.now() + (data.expires_in * 1000);
 
     const userId = uuid();
 

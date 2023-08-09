@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg width="100%" height="100%" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;">
+    <g transform="matrix(-0.95002,-0.95002,0.95002,-0.95002,516.723,1728.84)">
+        <clipPath id="_clip1">
+            <path d="M912.348,368.441L1181.85,637.943L642.968,1176.83L373.506,907.365L795.031,854.686C828.82,850.463 855.435,823.849 859.657,790.06L912.348,368.441ZM240.152,774.011L125.768,659.627L547.293,606.948C581.082,602.725 607.697,576.111 611.919,542.322L664.61,120.703L778.994,235.087L719.124,714.153C719.124,714.153 389.638,755.329 240.152,774.011ZM499.362,242.56L471.386,466.415L247.531,494.39L499.362,242.56Z"/>
+        </clipPath>
+        <g clip-path="url(#_clip1)">
+            <circle cx="642.915" cy="637.943" r="381.085" style="fill:url(#_Linear2);"/>
+        </g>
+    </g>
+    <defs>
+        <linearGradient id="_Linear2" x1="0" y1="0" x2="1" y2="0" gradientUnits="userSpaceOnUse" gradientTransform="matrix(762.171,0,0,762.171,261.829,637.943)"><stop offset="0" style="stop-color:rgb(255,196,117);stop-opacity:1"/><stop offset="0.52" style="stop-color:rgb(255,117,96);stop-opacity:1"/><stop offset="1" style="stop-color:rgb(255,89,89);stop-opacity:1"/></linearGradient>
+    </defs>
+</svg>
