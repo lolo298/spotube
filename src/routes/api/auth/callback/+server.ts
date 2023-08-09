@@ -7,7 +7,6 @@ import { isSession } from "$lib/utils";
 
 const redirect_uri = 'http://localhost:5173/api/auth/callback';
 
-/** @type {import('@sveltejs/kit/types/hooks').ServerRequest} */
 export async function GET({ url, cookies }) {
   const code = url.searchParams.get('code') || null;
   const state = url.searchParams.get('state') || null;
@@ -21,11 +20,6 @@ export async function GET({ url, cookies }) {
     const authOptions = {
       url: 'https://accounts.spotify.com/api/token',
       form: {
-        // code: code,
-        // redirect_uri: redirect_uri,
-        // client_id: SPOTIFY_CLIENT_ID,
-        // client_secret: SPOTIFY_CLIENT_SECRET,
-        // grant_type: 'client_credentials'
         "grant_type":    "authorization_code",
         "code":          code,
         "redirect_uri":  redirect_uri,
@@ -65,9 +59,13 @@ export async function GET({ url, cookies }) {
       maxAge: 60 * 60 * 24 * 7 // 1 week
     });
 
-    return new Response(JSON.stringify({sessionId: userId, data: data}),{
+    const destination = cookies.get('redirect') || '/';
+    cookies.delete('redirect');
+
+    return new Response("Logged in", {
+      status: 307,
       headers: {
-        'Content-Type': 'application/json'
+        'Location': destination
       }
     });
   }
