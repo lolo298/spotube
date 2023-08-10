@@ -17,7 +17,9 @@ jobs:
           echo SPOTIFY_CLIENT_ID={{ vars.SPOTIFY_CLIENT_ID }} >> .env
           echo SPOTIFY_CLIENT_SECRET={{ secrets.SPOTIFY_CLIENT_SECRET }} >> .env
       - name: Install dependencies
-        run: npm ci
+        run: |
+          npm ci
+          npx playwright install
       - name: Svelte check
         run: npm run check
       - name: Test
