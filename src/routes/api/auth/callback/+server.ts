@@ -8,7 +8,7 @@ import { isSession } from '$lib/utils';
 const redirect_uri = 'http://localhost:5173/api/auth/callback';
 
 export async function GET({ url, cookies }) {
-	const code = url.searchParams.get('code') || "";
+	const code = url.searchParams.get('code') || '';
 	const state = url.searchParams.get('state') || null;
 
 	if (state === null) {

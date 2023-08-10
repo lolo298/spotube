@@ -1,28 +1,17 @@
 // /api/auth/me
 
-import redis from '$lib/redis';
-import { isSession } from '$lib/utils.js';
+import { getSession } from '$lib/redis';
 
 export async function GET({ cookies }) {
 	const sessionId = cookies.get('session');
-
 	if (sessionId === undefined) {
 		return new Response(JSON.stringify({ error: 'session not found' }), {
 			status: 401
 		});
 	}
+	const session = await getSession(sessionId);
 
-	const res = await redis.get(`session:${sessionId}`);
-
-	if (res === null) {
-		return new Response(JSON.stringify({ error: 'session not found' }), {
-			status: 401
-		});
-	}
-
-	const session: SessionResponse = await JSON.parse(res);
-
-	if (!isSession(session)) {
+	if (!session) {
 		return new Response(JSON.stringify({ error: 'session not found' }), {
 			status: 401
 		});

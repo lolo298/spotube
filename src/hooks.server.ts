@@ -46,7 +46,6 @@ export async function handle({ event, resolve }) {
 
 			const refreshRes = await fetch(refreshUrl, refreshOptions);
 			const refreshData: SessionResponse = await refreshRes.json();
-
 			if (!isSession(refreshData)) {
 				return new Response(JSON.stringify({ error: 'session not found' }), {
 					status: 401

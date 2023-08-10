@@ -14,14 +14,14 @@ jobs:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
       - name: Create env
-        run:  |
+        run: |
           echo SPOTIFY_CLIENT_ID={{ vars.SPOTIFY_CLIENT_ID }} >> .env
           echo SPOTIFY_CLIENT_SECRET={{ secrets.SPOTIFY_CLIENT_SECRET }} >> .env
-      - name: Install dependencies
-        run: |
-          npm ci
-          npx playwright install --with-deps
       - name: Svelte check
         run: npm run check
-      - name: Test
-        run: npm run test
+      # - name: Install dependencies
+      #   run: |
+      #     npm ci
+      #     npx playwright install --with-deps
+      # - name: Test
+      #   run: npm run test

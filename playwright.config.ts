@@ -5,7 +5,7 @@ const config: PlaywrightTestConfig = {
 		command: 'npm run build && npm run preview',
 		port: 4173,
 		timeout: 120 * 1000,
-    reuseExistingServer: !process.env.CI,
+		reuseExistingServer: !process.env.CI
 	},
 	testDir: 'tests',
 	testMatch: /(.+\.)?(test|spec)\.[jt]s/
