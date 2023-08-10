@@ -5,18 +5,19 @@
 
 	let search = '';
 	let page = 1;
-	let url: string;
 	const debouncedSearch = asyncDebounce(searchSpotify, 500);
 	let promise: Promise<SpotifyTracksSearch>;
 
-	$: console.log(search, page, promise)
+	$: console.log(search, page, promise);
 
-	$: url = `/api/search?q=${search}&page=${page}`;
 	$: promise = debouncedSearch(search, page) as Promise<SpotifyTracksSearch>;
 
-	async function searchSpotify(search: string, page: number): Promise<SpotifyTracksSearch | undefined> {
+	async function searchSpotify(
+		search: string,
+		page: number
+	): Promise<SpotifyTracksSearch | undefined> {
 		if (!search) return;
-		const res = await fetch(url);
+		const res = await fetch(`/api/search?q=${search}&page=${page}`);
 		const data = await res.json();
 		return data;
 	}
@@ -30,7 +31,7 @@
 	<p>Searching...</p>
 {:then data}
 	{#if data?.tracks.items.length}
-	{console.log(data)}
+		{console.log(data)}
 		<div class="trackWrapper">
 			{#each data?.tracks.items as track}
 				<Track {track} />

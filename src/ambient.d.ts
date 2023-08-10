@@ -38,7 +38,6 @@ declare interface User {
 	email: string;
 }
 
-
 declare interface SpotifyTracksSearch {
 	tracks: {
 		href: string;
@@ -109,4 +108,3 @@ declare interface SpotifyImage {
 	url: string;
 	width: number;
 }
-

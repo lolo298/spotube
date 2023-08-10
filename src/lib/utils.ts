@@ -12,7 +12,10 @@ export async function getUser(session: Session): Promise<User> {
 	return data;
 }
 
-export function asyncDebounce<T extends unknown[], U>(callback: callback<T, U>, wait: number): callback<T, U> {
+export function asyncDebounce<T extends unknown[], U>(
+	callback: callback<T, U>,
+	wait: number
+): callback<T, U> {
 	let timeout: number | NodeJS.Timeout;
 	return (...args: T) => {
 		clearTimeout(timeout);
