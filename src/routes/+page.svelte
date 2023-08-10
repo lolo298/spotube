@@ -1,22 +1,19 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
-	import { tweened, spring } from 'svelte/motion';
+	import { tweened } from 'svelte/motion';
 	const value = tweened(0, {
-    duration: 1000,
-  });
+		duration: 1000
+	});
 
 	function incValue() {
-		if($value == 0) {
-      value.set(100);
-    } else {
-      value.set(0);
-    }
+		if ($value == 0) {
+			value.set(100);
+		} else {
+			value.set(0);
+		}
 	}
 
 	export let data;
-	let user:User = data.user;
-
-
+	let user = data.user;
 </script>
 
 <h1>Welcome to SvelteKit</h1>
