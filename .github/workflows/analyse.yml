@@ -7,8 +7,8 @@ on:
     branches: main
   workflow_dispatch:
 env: 
-  SPOTIFY_CLIENT_ID: ${{ SPOTIFY_CLIENT_ID }}
-  SPOTIFY_CLIENT_SECRET: ${{ secrets.SPOTIFY_CLIENT_SECRET }}
+  CLIENTID: ${{ vars.SPOTIFY_CLIENT_ID }}
+  CLIENTSECRET: ${{ secrets.SPOTIFY_CLIENT_SECRET }}
 
 jobs:
   analyse:
