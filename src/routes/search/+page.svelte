@@ -1,14 +1,15 @@
 <script lang="ts">
 	import Track from '$lib/components/Track.svelte';
-	// import debounce from 'lodash/debounce';
+	import TrackSkeleton from '$lib/components/TrackSkeleton.svelte';
 	import { asyncDebounce } from '$lib/utils';
 
 	let search = '';
 	let page = 1;
 	const debouncedSearch = asyncDebounce(searchSpotify, 500);
 	let promise: Promise<SpotifyTracksSearch>;
+	export let data;
 
-	$: console.log(search, page, promise);
+	$: console.log('test: ', data);
 
 	$: promise = debouncedSearch(search, page) as Promise<SpotifyTracksSearch>;
 
@@ -24,14 +25,19 @@
 </script>
 
 <h1>Searching the api</h1>
-
-<input type="text" bind:value={search} />
+<div class="search">
+	<input type="text" bind:value={search} />
+</div>
 
 {#await promise}
 	<p>Searching...</p>
+	<div class="trackWrapper">
+		{#each Array(10) as _}
+			<TrackSkeleton />
+		{/each}
+	</div>
 {:then data}
 	{#if data?.tracks.items.length}
-		{console.log(data)}
 		<div class="trackWrapper">
 			{#each data?.tracks.items as track}
 				<Track {track} />
@@ -56,5 +62,11 @@
 	.trackWrapper {
 		display: flex;
 		flex-direction: column;
+	}
+
+	.search {
+		display: flex;
+		align-items: center;
+		gap: 1rem;
 	}
 </style>

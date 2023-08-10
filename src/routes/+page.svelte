@@ -20,6 +20,7 @@
 <p>Visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to read the documentation</p>
 {#if user}
 	<p>Logged in as {user.display_name}</p>
+	<a href="/search">search</a>
 {:else}
 	<p>Not logged in</p>
 {/if}

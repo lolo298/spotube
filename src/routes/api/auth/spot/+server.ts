@@ -6,7 +6,7 @@ const redirect_uri = `http://localhost:5173/api/auth/callback`;
 export function GET({ url, cookies }) {
 	const state =
 		Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
-	const scope = 'user-read-private user-read-email';
+	const scope = 'user-read-private user-read-email user-top-read';
 
 	const destination = url.searchParams.get('redirect') || '/';
 
