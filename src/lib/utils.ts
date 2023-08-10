@@ -28,3 +28,7 @@ export function asyncDebounce<T extends unknown[], U>(
 }
 
 type callback<T extends unknown[], U> = (...args: T) => Promise<U | undefined>;
+
+export function delay(ms: number) {
+	return new Promise((resolve) => setTimeout(resolve, ms));
+}

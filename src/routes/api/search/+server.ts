@@ -1,4 +1,5 @@
 import { getSession } from '$lib/redis';
+import { error, json } from '@sveltejs/kit';
 
 export async function GET({ cookies, url }) {
 	const sessionId = cookies.get('session');
@@ -7,27 +8,13 @@ export async function GET({ cookies, url }) {
 	const offset = page === '0' || !page ? 1 : parseInt(page);
 
 	if (sessionId === undefined) {
-		return new Response(
-			JSON.stringify({
-				error: 'session not found'
-			}),
-			{
-				status: 401
-			}
-		);
+		throw error(401, 'session not found');
 	}
 
 	const session = await getSession(sessionId);
 
 	if (!session) {
-		return new Response(
-			JSON.stringify({
-				error: 'session not found'
-			}),
-			{
-				status: 401
-			}
-		);
+		throw error(401, 'session not found');
 	}
 
 	const res = await fetch(
@@ -39,7 +26,5 @@ export async function GET({ cookies, url }) {
 		}
 	);
 	const data: SpotifyTracksSearch = await res.json();
-	return new Response(JSON.stringify(data), {
-		status: 200
-	});
+	return json(data);
 }

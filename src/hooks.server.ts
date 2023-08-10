@@ -2,11 +2,12 @@ import { SPOTIFY_CLIENT_ID, SPOTIFY_CLIENT_SECRET } from '$env/static/private';
 import { queryString } from '$lib';
 import redis, { getSession } from '$lib/redis';
 import { getUser, isSession } from '$lib/utils';
+import { error, type Handle } from '@sveltejs/kit';
 
 const pathExcluded = ['/api/auth/callback', '/api/auth/spot'];
 const pathNeedsAuth = ['/search'];
 
-export async function handle({ event, resolve }) {
+export const handle: Handle = async ({ event, resolve }) => {
 	const sessionId = event.cookies.get('session') || '';
 	const session = await getSession(sessionId);
 
@@ -19,10 +20,10 @@ export async function handle({ event, resolve }) {
 
 	if (event.url.pathname.startsWith('/api') && !pathExcluded.includes(event.url.pathname)) {
 		if (session === null) {
-			return new Response(JSON.stringify({ error: 'session not found' }), {
-				status: 401
-			});
+			throw error(401, 'session not found');
 		}
+		response.headers.set('x-expires-at', session.expires_at.toString());
+		response.headers.set('x-expires-in', (session.expires_at - Date.now()).toString());
 
 		if (session.expires_at - Date.now() < 60 * 1000) {
 			//refresh token
@@ -47,9 +48,7 @@ export async function handle({ event, resolve }) {
 			const refreshRes = await fetch(refreshUrl, refreshOptions);
 			const refreshData: SessionResponse = await refreshRes.json();
 			if (!isSession(refreshData)) {
-				return new Response(JSON.stringify({ error: 'session not found' }), {
-					status: 401
-				});
+				throw error(401, 'session not found');
 			}
 
 			refreshData.expires_at = Date.now() + refreshData.expires_in * 1000;
@@ -73,4 +72,4 @@ export async function handle({ event, resolve }) {
 	}
 
 	return response;
-}
+};

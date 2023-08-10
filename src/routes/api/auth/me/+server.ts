@@ -1,20 +1,18 @@
 // /api/auth/me
 
 import { getSession } from '$lib/redis';
+import { error, json } from '@sveltejs/kit';
+import type { RequestHandler } from './$types';
 
-export async function GET({ cookies }) {
+export const GET: RequestHandler = async ({ cookies }) => {
 	const sessionId = cookies.get('session');
 	if (sessionId === undefined) {
-		return new Response(JSON.stringify({ error: 'session not found' }), {
-			status: 401
-		});
+		throw error(401, 'session not found');
 	}
 	const session = await getSession(sessionId);
 
 	if (!session) {
-		return new Response(JSON.stringify({ error: 'session not found' }), {
-			status: 401
-		});
+		throw error(401, 'session not found');
 	}
 
 	if (session.provider == 'spotify') {
@@ -24,12 +22,8 @@ export async function GET({ cookies }) {
 			}
 		});
 		const data = await res.json();
-		return new Response(JSON.stringify(data), {
-			status: 200
-		});
+		return json(data);
 	}
 
-	return new Response('Not implemented', {
-		status: 501
-	});
-}
+	throw error(501, 'Not implemented');
+};

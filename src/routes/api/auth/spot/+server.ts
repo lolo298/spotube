@@ -1,9 +1,10 @@
 import { redirect } from '@sveltejs/kit';
 import { SPOTIFY_CLIENT_ID } from '$env/static/private';
 import { queryString } from '$lib';
+import type { RequestHandler } from './$types';
 
 const redirect_uri = `http://localhost:5173/api/auth/callback`;
-export function GET({ url, cookies }) {
+export const GET: RequestHandler = async ({ url, cookies }) => {
 	const state =
 		Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
 	const scope = 'user-read-private user-read-email user-top-read';
@@ -21,4 +22,4 @@ export function GET({ url, cookies }) {
 	});
 
 	throw redirect(307, `https://accounts.spotify.com/authorize?${query}`);
-}
+};

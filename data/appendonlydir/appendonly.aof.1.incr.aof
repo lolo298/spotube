@@ -532,3 +532,19 @@ $4
 PXAT
 $13
 1692206599285
+*2
+$6
+SELECT
+$1
+0
+*5
+$3
+SET
+$44
+session:c1e8cc6c-6af7-493a-86e7-bc2f07ec3bb2
+$530
+{"access_token":"BQCrFFf8WX1wTTte1zmEnhd2ssb75jHdG3l0DIaf2wEGtCThsLNBPCsf7VwDoiYXk60x_3tLupxURPY5xC4ql975Xzbg3aLb5vg7U9zAGZngRIQ82u7NuPOs44txC5xXp1tiTqqqslMkxuQGj7uBt6zBCgFrUhAThGYXHKtJ8RCfRnJxJkoCvHZQOmrdaW44kd-CbuX-AlhywSSd73eIweE","token_type":"Bearer","expires_in":3600,"refresh_token":"AQDBLZ1UQwfrCA5LhD5tfrt9VMuw7lKpAKX6Rz9PwNbLsYOCHDQ4Ist9T9Laele7JWfhawAb-foDBrDmv_8eSoIz2u0mVbTWh1dBROPJEXq5jlRdVTofkPeN8PLYW24FHK8","scope":"user-read-email user-read-private user-top-read","expires_at":1691695186346,"provider":"spotify"}
+$4
+PXAT
+$13
+1692296386347
