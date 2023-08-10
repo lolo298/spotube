@@ -6,15 +6,16 @@ on:
   pull_request:
     branches: main
   workflow_dispatch:
-env: 
-  CLIENTID: ${{ vars.SPOTIFY_CLIENT_ID }}
-  CLIENTSECRET: ${{ secrets.SPOTIFY_CLIENT_SECRET }}
 
 jobs:
   analyse:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+      - name: Create env
+        run:  |
+        echo SPOTIFY_CLIENT_ID={{ vars.SPOTIFY_CLIENT_ID }} >> .env
+        echo SPOTIFY_CLIENT_SECRET={{ secrets.SPOTIFY_CLIENT_SECRET }} >> .env
       - name: Install dependencies
         run: npm ci
       - name: Svelte check
