@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { tweened } from 'svelte/motion';
+	import NeedAuth from '$lib/components/NeedAuth.svelte';
 	const value = tweened(0, {
 		duration: 1000
 	});
@@ -12,19 +13,26 @@
 		}
 	}
 
-	export let data;
-	let user = data.user;
 </script>
 
 <h1>Welcome to SvelteKit</h1>
 <p>Visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to read the documentation</p>
-{#if user}
-	<p>Logged in as {user.display_name}</p>
-	<a href="/search">search</a>
-{:else}
-	<p>Not logged in</p>
-{/if}
-<a href="/api/auth/spot">Login to spotify</a>
+
+<NeedAuth let:user>
+	<div>
+		<p>Logged in as {user.display_name}</p>
+		<a href="/api/auth/logout">Logout</a>
+		<a href="/search">search</a>
+	</div>
+	
+	<div slot="signedOut">
+		<a href="/api/auth/spot">Login to spotify</a>
+		<p>Not Logged in</p>
+	</div>
+</NeedAuth>
+
+
+
 
 <div class="container" style="--translateX: {$value}px" />
 <button on:click={incValue}>Increment</button>

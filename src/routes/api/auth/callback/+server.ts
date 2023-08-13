@@ -6,11 +6,10 @@ import redis from '$lib/redis';
 import { isSession } from '$lib/utils';
 import type { RequestHandler } from './$types';
 
-const redirect_uri = 'http://localhost:5173/api/auth/callback';
-
-export const GET: RequestHandler = async ({ url, cookies }) => {
+export const GET: RequestHandler = async ({ url, cookies, fetch }) => {
 	const code = url.searchParams.get('code') || '';
 	const state = url.searchParams.get('state') || null;
+	const redirect_uri = `${url.origin}/api/auth/callback`;
 
 	if (state === null) {
 		throw redirect(307, `/#${queryString.stringify({ error: 'state_mismatch' })}`);
@@ -52,7 +51,6 @@ export const GET: RequestHandler = async ({ url, cookies }) => {
 	await redis.set(`session:${userId}`, JSON.stringify(data), {
 		EX: 60 * 60 * 24 * 7 // 1 week
 	});
-
 	cookies.set('session', userId, {
 		path: '/',
 		maxAge: 60 * 60 * 24 * 7 // 1 week

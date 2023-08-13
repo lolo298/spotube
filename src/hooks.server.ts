@@ -2,7 +2,7 @@ import { SPOTIFY_CLIENT_ID, SPOTIFY_CLIENT_SECRET } from '$env/static/private';
 import { queryString } from '$lib';
 import redis, { getSession } from '$lib/redis';
 import { getUser, isSession } from '$lib/utils';
-import { error, type Handle } from '@sveltejs/kit';
+import { error, redirect, type Handle } from '@sveltejs/kit';
 
 const pathExcluded = ['/api/auth/callback', '/api/auth/spot'];
 const pathNeedsAuth = ['/search'];
@@ -62,13 +62,7 @@ export const handle: Handle = async ({ event, resolve }) => {
 	}
 
 	if (pathNeedsAuth.includes(event.url.pathname) && session === null) {
-		return new Response('Unauthorized', {
-			status: 302,
-			headers: {
-				Location:
-					'/api/auth/spot?redirect=' + encodeURIComponent(event.url.pathname + event.url.search)
-			}
-		});
+		throw redirect(307, `/api/auth/spot?redirect=${encodeURIComponent(event.url.pathname + event.url.search)})}`);
 	}
 
 	return response;
