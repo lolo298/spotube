@@ -1,4 +1,4 @@
-import { getSession } from '$lib/redis';
+import { getSession, getSpotifyToken } from '$lib/utils';
 import { error, json } from '@sveltejs/kit';
 
 export async function GET({ cookies, url }) {
@@ -13,6 +13,8 @@ export async function GET({ cookies, url }) {
 
 	const session = await getSession(sessionId);
 
+	const spotify = await getSpotifyToken(session.userId);
+
 	if (!session) {
 		throw error(401, 'session not found');
 	}
@@ -21,7 +23,7 @@ export async function GET({ cookies, url }) {
 		`https://api.spotify.com/v1/search?q=${query}&type=track&limit=10&offset=${offset * 10 - 10}`,
 		{
 			headers: {
-				Authorization: `Bearer ${session.access_token}`
+				Authorization: `Bearer ${spotify.access_token}`
 			}
 		}
 	);

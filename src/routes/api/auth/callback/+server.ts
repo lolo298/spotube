@@ -3,7 +3,7 @@ import { queryString } from '$lib';
 import { error, redirect } from '@sveltejs/kit';
 import { v4 as uuid } from 'uuid';
 import redis from '$lib/redis';
-import { isSession } from '$lib/utils';
+import { isSpotifyToken } from '$lib/utils';
 import type { RequestHandler } from './$types';
 
 export const GET: RequestHandler = async ({ url, cookies, fetch }) => {
@@ -36,24 +36,18 @@ export const GET: RequestHandler = async ({ url, cookies, fetch }) => {
 			'Content-Type': 'application/x-www-form-urlencoded'
 		}
 	});
-	const data: Session = await res.json();
+	const data: SpotifyToken = await res.json();
 
-	if (!isSession(data)) {
+	if (!isSpotifyToken(data)) {
 		throw error(401, 'session not found');
 	}
 
 	data.expires_at = Date.now() + data.expires_in * 1000;
 
-	data.provider = 'spotify';
+	const userId = cookies.get('session') || uuid();
 
-	const userId = uuid();
-
-	await redis.set(`session:${userId}`, JSON.stringify(data), {
+	await redis.set(`spotify:${userId}`, JSON.stringify(data), {
 		EX: 60 * 60 * 24 * 7 // 1 week
-	});
-	cookies.set('session', userId, {
-		path: '/',
-		maxAge: 60 * 60 * 24 * 7 // 1 week
 	});
 
 	const destination = cookies.get('redirect') || '/';

@@ -5,6 +5,7 @@
 	"scripts": {
 		"dev": "docker-compose up -d && sleep 1 && prisma db push && vite dev --host",
 		"dev:stop": "docker-compose down",
+		"studio": "prisma studio",
 		"build": "vite build",
 		"preview": "vite preview",
 		"test": "npm run test:integration && npm run test:unit",

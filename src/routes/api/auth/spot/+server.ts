@@ -11,7 +11,11 @@ export const GET: RequestHandler = async ({ url, cookies }) => {
 
 	const destination = url.searchParams.get('redirect') || '/';
 
-	cookies.set('redirect', destination);
+	cookies.set('redirect', destination,
+		{
+			path: '/',
+			});
+
 
 	const query = queryString.stringify({
 		response_type: 'code',

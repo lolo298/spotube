@@ -1,4 +1,4 @@
-import { asyncDebounce, isSession } from '$lib/utils';
+import { asyncDebounce, isSpotifyToken } from '$lib/utils';
 import { delay } from '$lib/utils';
 import { describe, it, expect, vi } from 'vitest';
 
@@ -62,26 +62,3 @@ describe('delay', () => {
 	});
 });
 
-describe('isSession', () => {
-	it('should return true if access_token is defined', () => {
-		const session: SessionResponse = {
-			userId: '123',
-			access_token: '123',
-			token_type: 'Bearer',
-			expires_in: 3600,
-			expires_at: Date.now() + 3600 * 1000,
-			provider: 'spotify',
-			scope: 'user-read-private user-read-email',
-			refresh_token: '123'
-		};
-		expect(isSession(session)).toBe(true);
-	});
-
-	it('should return false if response is an error type', () => {
-		const session: SessionResponse = {
-			error: 'invalid_grant',
-			error_description: 'Invalid authorization code'
-		};
-		expect(isSession(session)).toBe(false);
-	});
-});
