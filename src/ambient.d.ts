@@ -1,4 +1,5 @@
 declare interface Session {
+	userId: string;
 	access_token: string;
 	token_type: string;
 	expires_in: number;
@@ -8,6 +9,15 @@ declare interface Session {
 	provider: 'youtube' | 'spotify';
 }
 
+declare interface User {
+	id: string;
+	email: string;
+	name: string | null;
+	Images: Image[];
+	createdAt: Date;
+	updatedAt: Date;
+}
+
 declare interface SpotifyError {
 	error: string;
 	error_description: string;
@@ -15,7 +25,7 @@ declare interface SpotifyError {
 
 declare type SessionResponse = Session | SpotifyError;
 
-declare interface User {
+declare interface spotifyUser {
 	display_name: string;
 	external_urls: {
 		spotify: string;
@@ -103,7 +113,7 @@ declare interface SpotifyArtist {
 	uri: string;
 }
 
-declare interface SpotifyImage {
+declare interface Image {
 	height: number;
 	url: string;
 	width: number;

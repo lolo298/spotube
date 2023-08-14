@@ -5,7 +5,7 @@ import type { RequestHandler } from './$types';
 
 export const GET: RequestHandler = async ({ url, cookies }) => {
 	const state =
-	Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+		Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
 	const scope = 'user-read-private user-read-email user-top-read';
 	const redirect_uri = `${url.origin}/api/auth/callback`;
 

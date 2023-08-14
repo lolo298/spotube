@@ -65,6 +65,7 @@ describe('delay', () => {
 describe('isSession', () => {
 	it('should return true if access_token is defined', () => {
 		const session: SessionResponse = {
+			userId: '123',
 			access_token: '123',
 			token_type: 'Bearer',
 			expires_in: 3600,

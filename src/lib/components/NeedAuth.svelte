@@ -1,21 +1,20 @@
 <!-- needAuth.svelte -->
 
 <script lang="ts">
-	import { page } from "$app/stores";
+	import { page } from '$app/stores';
 
-  const user = $page.data.user;
+	const user = $page.data.user;
 
-  interface $$Slots {
-    default: {
-      user: User;
-    };
-    signedOut: {};
-  }
-
+	interface $$Slots {
+		default: {
+			user: User;
+		};
+		signedOut: object;
+	}
 </script>
 
 {#if user}
-  <slot user={user}/>
+	<slot {user} />
 {:else}
-  <slot name="signedOut" />
+	<slot name="signedOut" />
 {/if}

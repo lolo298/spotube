@@ -1,0 +1,41 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String      @id @default(uuid())
+  email     String   @unique
+  name      String?  @unique
+  password  String
+  SpotifyUser SpotifyUser?
+  Images    Images[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model SpotifyUser {
+  id        String      @id @default(uuid())
+  userId    String      @unique
+  user      User     @relation(fields: [userId], references: [id])
+  spotifyId String   @unique
+  explicitContent Boolean
+  country   String
+  email     String
+}
+
+model Images {
+  id          Int      @id @default(autoincrement())
+  userId      String
+  User        User     @relation(fields: [userId], references: [id])
+  url         String
+  height      Int
+  width       Int
+}

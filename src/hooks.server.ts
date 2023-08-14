@@ -13,6 +13,9 @@ export const handle: Handle = async ({ event, resolve }) => {
 
 	if (session !== null) {
 		const user = await getUser(session);
+		if (!user) {
+			throw error(401, 'session not found');
+		}
 		event.locals.user = user;
 	}
 
@@ -62,7 +65,10 @@ export const handle: Handle = async ({ event, resolve }) => {
 	}
 
 	if (pathNeedsAuth.includes(event.url.pathname) && session === null) {
-		throw redirect(307, `/api/auth/spot?redirect=${encodeURIComponent(event.url.pathname + event.url.search)})}`);
+		throw redirect(
+			307,
+			`/api/auth/spot?redirect=${encodeURIComponent(event.url.pathname + event.url.search)})}`
+		);
 	}
 
 	return response;
