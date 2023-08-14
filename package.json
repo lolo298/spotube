@@ -3,7 +3,7 @@
 	"version": "0.0.1",
 	"private": true,
 	"scripts": {
-		"dev": "docker-compose up -d && vite dev --host",
+		"dev": "docker-compose up -d && sleep 1 && prisma db push && vite dev --host",
 		"dev:stop": "docker-compose down",
 		"build": "vite build",
 		"preview": "vite preview",
