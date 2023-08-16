@@ -5,7 +5,7 @@
 
 	export let form: ActionData;
 
-	$: if(form?.success) {
+	$: if (form?.success) {
 		goto('/signin/link');
 	}
 </script>

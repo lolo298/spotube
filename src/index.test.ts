@@ -60,4 +60,3 @@ describe('delay', () => {
 		expect(end - start).toBeGreaterThanOrEqual(100);
 	});
 });
-

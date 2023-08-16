@@ -5,8 +5,8 @@
 	import type { LayoutData } from './$types';
 
 	export let data: LayoutData;
-	userStore.set(data.user)
-	console.log('layout data: ', data)
+	userStore.set(data.user);
+	console.log('layout data: ', data);
 </script>
 
 <Navbar />

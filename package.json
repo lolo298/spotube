@@ -14,7 +14,7 @@
 		"lint": "prettier --plugin-search-dir . --check . && eslint .",
 		"format": "prettier --plugin-search-dir . --write .",
 		"test:integration": "playwright test",
-		"test:unit": "vitest",
+		"test:unit": "vitest --run",
 		"pre-pull": "npm run format && npm run lint && npm run check && npm run test:unit"
 	},
 	"devDependencies": {

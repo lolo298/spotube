@@ -1,11 +1,8 @@
-import { SPOTIFY_CLIENT_ID, SPOTIFY_CLIENT_SECRET } from '$env/static/private';
-import { queryString } from '$lib';
-import redis from '$lib/redis';
-import { getUser, isSpotifyToken, getSession } from '$lib/utils/server';
-import { error, redirect, type Handle } from '@sveltejs/kit';
+import { getUser, getSession } from '$lib/utils/server';
+import { error, type Handle } from '@sveltejs/kit';
 
-const pathExcluded = ['/api/auth/callback', '/api/auth/spot'];
-const pathNeedsAuth = ['/search'];
+// const pathExcluded = ['/api/auth/callback', '/api/auth/spot'];
+// const pathNeedsAuth = ['/search'];
 
 export const handle: Handle = async ({ event, resolve }) => {
 	const sessionId = event.cookies.get('session') || '';
@@ -17,10 +14,9 @@ export const handle: Handle = async ({ event, resolve }) => {
 			throw error(401, 'session not found');
 		}
 		event.locals.user = user;
-	} catch{
+	} catch {
 		//empty
 	}
-
 
 	const response = await resolve(event);
 

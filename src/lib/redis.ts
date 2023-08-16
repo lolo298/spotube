@@ -2,9 +2,8 @@
 
 import { createClient, type RedisClientType } from 'redis';
 interface RedisClientTypeExtended extends RedisClientType {
-  getJSON<T>(key: string): Promise<T>;
+	getJSON<T>(key: string): Promise<T>;
 }
-
 
 class RedisClient {
 	private static _instance: RedisClient;
@@ -16,7 +15,7 @@ class RedisClient {
 
 		this.client.getJSON = async (key: string) => {
 			const data = await this.client.get(key);
-			if(!data) throw new Error(`No data found for key ${key}`);
+			if (!data) throw new Error(`No data found for key ${key}`);
 			return JSON.parse(data);
 		};
 

@@ -2,7 +2,6 @@ import { omit } from 'lodash';
 import prisma from '$lib/prisma';
 import redis from '$lib/redis';
 
-
 export function isSpotifyToken(res: SpotifyTokenResponse): res is SpotifyToken {
 	return (res as SpotifyToken).access_token !== undefined;
 }
@@ -10,7 +9,7 @@ export function isSpotifyToken(res: SpotifyTokenResponse): res is SpotifyToken {
 export async function getUser(session: Session) {
 	let user: (User & { password: string }) | null;
 	try {
-		console.log(session)
+		console.log(session);
 		user = await prisma.user.findUnique({
 			where: {
 				id: session?.userId

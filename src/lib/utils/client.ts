@@ -1,4 +1,3 @@
-
 export function asyncDebounce<T extends unknown[], U>(
 	callback: callback<T, U>,
 	wait: number
