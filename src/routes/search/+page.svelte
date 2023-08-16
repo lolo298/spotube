@@ -1,7 +1,7 @@
 <script lang="ts">
 	import Track from '$lib/components/Track.svelte';
 	import TrackSkeleton from '$lib/components/TrackSkeleton.svelte';
-	import { asyncDebounce } from '$lib/utils';
+	import { asyncDebounce } from '$lib/utils/client';
 
 	let search = '';
 	let page = 1;

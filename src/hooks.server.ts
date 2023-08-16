@@ -1,7 +1,7 @@
 import { SPOTIFY_CLIENT_ID, SPOTIFY_CLIENT_SECRET } from '$env/static/private';
 import { queryString } from '$lib';
 import redis from '$lib/redis';
-import { getUser, isSpotifyToken, getSession } from '$lib/utils';
+import { getUser, isSpotifyToken, getSession } from '$lib/utils/server';
 import { error, redirect, type Handle } from '@sveltejs/kit';
 
 const pathExcluded = ['/api/auth/callback', '/api/auth/spot'];

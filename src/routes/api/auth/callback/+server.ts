@@ -3,7 +3,7 @@ import { queryString } from '$lib';
 import { error, redirect } from '@sveltejs/kit';
 import { v4 as uuid } from 'uuid';
 import redis from '$lib/redis';
-import { isSpotifyToken } from '$lib/utils';
+import { isSpotifyToken } from '$lib/utils/server';
 import type { RequestHandler } from './$types';
 
 export const GET: RequestHandler = async ({ url, cookies, fetch }) => {

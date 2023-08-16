@@ -1,4 +1,4 @@
-import { getSession, getSpotifyToken } from '$lib/utils';
+import { getSession, getSpotifyToken } from '$lib/utils/server';
 import { error, json } from '@sveltejs/kit';
 
 export async function GET({ cookies, url }) {

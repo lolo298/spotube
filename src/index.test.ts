@@ -1,5 +1,4 @@
-import { asyncDebounce, isSpotifyToken } from '$lib/utils';
-import { delay } from '$lib/utils';
+import { asyncDebounce, delay } from '$lib/utils/client';
 import { describe, it, expect, vi } from 'vitest';
 
 describe('asyncDebounce', () => {
