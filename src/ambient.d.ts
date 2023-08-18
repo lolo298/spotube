@@ -1,4 +1,5 @@
 declare interface Session {
+	id: string;
 	userId: string;
 }
 declare interface SpotifyToken {
@@ -117,4 +118,10 @@ declare interface Image {
 	height: number;
 	url: string;
 	width: number;
+}
+
+declare type Theme = 'dark' | 'light';
+
+declare interface UserPreferences {
+	theme: Theme;
 }

@@ -45,8 +45,9 @@ export const actions: Actions = {
 
 		const sessionId = uuid();
 
-		const session = {
-			userId: user.id
+		const session: Session = {
+			userId: user.id,
+			id: sessionId
 		};
 
 		redis.set(`session:${sessionId}`, JSON.stringify(session), { EX: 60 * 60 * 24 * 7 });

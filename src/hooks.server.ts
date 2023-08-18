@@ -1,4 +1,5 @@
-import { getUser, getSession } from '$lib/utils/server';
+import { userPreferencesStore } from '$lib/stores';
+import { getUser, getSession, getPreferences } from '$lib/utils/server';
 import { error, type Handle } from '@sveltejs/kit';
 
 // const pathExcluded = ['/api/auth/callback', '/api/auth/spot'];
@@ -9,11 +10,18 @@ export const handle: Handle = async ({ event, resolve }) => {
 
 	try {
 		const session = await getSession(sessionId);
-		const user = await getUser(session);
+		let [user, preferences] = await Promise.all([getUser(session), getPreferences(session.userId)]);
 		if (!user) {
 			throw error(401, 'session not found');
 		}
+		if (!preferences) {
+			preferences = {
+				theme: 'dark'
+			};
+		}
 		event.locals.user = user;
+		event.locals.session = session;
+		event.locals.preferences = preferences;
 	} catch {
 		//empty
 	}

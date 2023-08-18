@@ -15,3 +15,16 @@ export const queryString = {
 		}, {});
 	}
 };
+
+export function isTheme(theme: string): theme is Theme {
+	return ['dark', 'light'].includes(theme);
+}
+
+export function isUserPreferences(preferences: unknown): preferences is UserPreferences {
+	if (typeof preferences !== 'object' || preferences === null) {
+		return false;
+	}
+
+	const { theme } = preferences as UserPreferences;
+	return isTheme(theme);
+}

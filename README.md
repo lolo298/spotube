@@ -42,8 +42,8 @@ You can preview the production build with `npm run preview`.
 ### Spotify
 
 - [x] add auth
-- [ ] add redis to store sessions
-- [ ] add middleware to check if token is valid
+- [x] add redis to store sessions
+- [x] add middleware to check if token is valid
 - [ ] add login page
 - [ ] add search page
 

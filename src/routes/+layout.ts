@@ -1,9 +1,13 @@
 import type { LayoutLoad } from './$types';
 
-export const load = (async ({ fetch }) => {
-	async function getUser(): Promise<User> {
-		const res = await fetch('/api/auth/me');
+interface me {
+	user: User;
+	preferences: UserPreferences;
+}
 
+export const load = (async ({ fetch }) => {
+	async function getData() {
+		const res = await fetch('/api/auth/me');
 		if (!res.ok) {
 			throw new Error('User not found');
 		}
@@ -11,7 +15,10 @@ export const load = (async ({ fetch }) => {
 		return await res.json();
 	}
 
+	const data = await getData();
+
 	return {
-		user: await getUser()
+		user: data.user,
+		preferences: data.preferences
 	};
 }) satisfies LayoutLoad;

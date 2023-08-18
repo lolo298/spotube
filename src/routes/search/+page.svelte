@@ -7,9 +7,7 @@
 	let page = 1;
 	const debouncedSearch = asyncDebounce(searchSpotify, 500);
 	let promise: Promise<SpotifyTracksSearch>;
-	export let data;
-
-	$: console.log('test: ', data);
+	// export let data;
 
 	$: promise = debouncedSearch(search, page) as Promise<SpotifyTracksSearch>;
 
