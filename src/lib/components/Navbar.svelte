@@ -3,6 +3,8 @@
 	import { Button } from '$components/ui';
 	import ThemeToggle from '$components/ThemeToggle.svelte';
 	import { onMount } from 'svelte';
+	import NeedAuth from './NeedAuth.svelte';
+	import { goto } from '$app/navigation';
 
 	let sentinel: HTMLDivElement;
 	let nav: HTMLElement;
@@ -27,6 +29,14 @@
 
 		observer.observe(sentinel);
 	});
+
+	function logout() {
+		fetch('/api/auth/logout', {
+			method: 'DELETE'
+		}).then(() => {
+			window.location.href = '/';
+		});
+	}
 </script>
 
 <div class="sentinel invisible w-full" style="height: 1px;" bind:this={sentinel} />
@@ -34,17 +44,27 @@
 	<h1 class="text-2xl font-bold ml-4">Spotube</h1>
 	<div class="flex-grow">
 		<ul class="flex justify-end items-center gap-4">
-			{#if $page.data.user}
-				<li>
-					<Button href="/search">Search</Button>
-				</li>
-				<li>
-					<Button href="/profile">Profile</Button>
-				</li>
-				<li>
-					<Button href="/api/auth/logout">Logout</Button>
-				</li>
-			{/if}
+			<NeedAuth>
+				<svelte:fragment>
+					<li>
+						<Button href="/search">Search</Button>
+					</li>
+					<li>
+						<Button href="/profile">Profile</Button>
+					</li>
+					<li>
+						<Button on:click={logout}>Logout</Button>
+					</li>
+				</svelte:fragment>
+				<svelte:fragment slot="signedOut">
+					<li>
+						<Button href="/signin">Sign In</Button>
+					</li>
+					<li>
+						<Button href="/login">Login</Button>
+					</li>
+				</svelte:fragment>
+			</NeedAuth>
 			<li>
 				<ThemeToggle />
 			</li>

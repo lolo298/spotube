@@ -3,10 +3,12 @@
 	import { enhance } from '$app/forms';
 	import { goto } from '$app/navigation';
 	import type { ActionData } from './$types';
+	import { redirect } from '@sveltejs/kit';
+	import { browser } from '$app/environment';
 
 	export let form: ActionData;
 
-	$: form?.success && goto('/');
+	$: browser && form?.success && goto('/');
 </script>
 
 <form method="POST" use:enhance>

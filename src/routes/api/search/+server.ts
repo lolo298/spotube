@@ -1,7 +1,7 @@
 import { getSession, getSpotifyToken } from '$lib/utils/server';
-import { error, json } from '@sveltejs/kit';
+import { error, json, type RequestHandler } from '@sveltejs/kit';
 
-export async function GET({ cookies, url }) {
+export const GET: RequestHandler = async ({ cookies, url }) => {
 	const sessionId = cookies.get('session');
 	const query = url.searchParams.get('q');
 	const page = url.searchParams.get('page');
@@ -29,4 +29,4 @@ export async function GET({ cookies, url }) {
 	);
 	const data: SpotifyTracksSearch = await res.json();
 	return json(data);
-}
+};

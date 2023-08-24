@@ -17,29 +17,16 @@ export async function getUser(session: Session) {
 				Images: true
 			}
 		});
+		if (!user) return null;
 	} catch (e) {
 		console.error(e);
-		return {
-			id: '0',
-			name: 'Guest',
-			Images: [
-				{
-					height: 10,
-					width: 10,
-					url: '/user.jpg'
-				}
-			],
-			createdAt: new Date(),
-			updatedAt: new Date(),
-			email: 'guest@example.com'
-		};
+		return null;
 	}
 	const excluded = omit(user, ['password']);
 	return excluded;
 }
 
 export async function getPreferences(userId: string): Promise<UserPreferences | null> {
-	// console.trace('getPreferences: ', userId);
 	const preferences = await redis.get(`preferences:${userId}`);
 	if (preferences === null) return null;
 	return JSON.parse(preferences);
@@ -49,8 +36,8 @@ export async function getSession(id: string): Promise<Session> {
 	const session = await redis.get(`session:${id}`);
 	if (session === null) {
 		return {
-			id: '0',
-			userId: '0'
+			id: '',
+			userId: ''
 		};
 	}
 	return JSON.parse(session);

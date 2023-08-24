@@ -8,8 +8,6 @@
 
 	let checked: boolean = $userPreferencesStore.theme === 'dark';
 
-	$: console.log($userPreferencesStore);
-
 	$: if (browser) {
 		if (checked) {
 			$userPreferencesStore.theme = 'dark';
