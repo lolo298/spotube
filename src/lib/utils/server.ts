@@ -38,15 +38,10 @@ export async function getUser(session: Session) {
 	return excluded;
 }
 
-export async function getPreferences(userId: string): Promise<UserPreferences> {
-	console.trace('getPreferences: ', userId);
+export async function getPreferences(userId: string): Promise<UserPreferences | null> {
+	// console.trace('getPreferences: ', userId);
 	const preferences = await redis.get(`preferences:${userId}`);
-	if (preferences === null) {
-		return {
-			theme: 'dark'
-		};
-	}
-
+	if (preferences === null) return null;
 	return JSON.parse(preferences);
 }
 

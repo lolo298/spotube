@@ -4,6 +4,7 @@
 
 	interface $$Props {
 		init?: () => boolean;
+		checked?: boolean;
 	}
 
 	interface $$Events {
@@ -15,12 +16,7 @@
 	};
 
 	const dispatcher = createEventDispatcher<Dispatcher<$$Events>>();
-	export let init = () => false;
-	let checked: boolean;
-
-	onMount(() => {
-		checked = init();
-	});
+	export let checked: boolean;
 
 	function change(event: Event) {
 		checked = (event.target as HTMLInputElement).checked;
