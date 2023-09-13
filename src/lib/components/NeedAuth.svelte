@@ -2,8 +2,9 @@
 
 <script lang="ts">
 	import { page } from '$app/stores';
+	import { userStore } from '$lib/stores';
 
-	const user = $page.data.user;
+	let user = $userStore;
 
 	interface $$Slots {
 		default: {

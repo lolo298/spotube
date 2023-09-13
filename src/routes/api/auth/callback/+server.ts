@@ -1,6 +1,6 @@
 import { SPOTIFY_CLIENT_ID, SPOTIFY_CLIENT_SECRET } from '$env/static/private';
 import { queryString } from '$lib';
-import { error, redirect } from '@sveltejs/kit';
+import { error, json, redirect } from '@sveltejs/kit';
 import { v4 as uuid } from 'uuid';
 import redis from '$lib/redis';
 import { isSpotifyToken } from '$lib/utils/server';
@@ -39,6 +39,8 @@ export const GET: RequestHandler = async ({ url, cookies, fetch }) => {
 	const data: SpotifyToken = await res.json();
 
 	if (!isSpotifyToken(data)) {
+		window.opener.spotify.callback({ success: false, error: 'invalid_token' });
+		window.close();
 		throw error(401, 'session not found');
 	}
 
@@ -52,5 +54,10 @@ export const GET: RequestHandler = async ({ url, cookies, fetch }) => {
 
 	const destination = cookies.get('redirect') || '/';
 	cookies.delete('redirect');
-	throw redirect(307, destination);
+	window.opener.spotify.callback({ success: true, destination });
+	window.close();
+	return json({
+		success: true,
+		message: 'Login successful'
+	});
 };

@@ -1,9 +1,11 @@
 import prisma from '$lib/prisma';
 import type { Actions } from './$types';
 import { v4 as uuid } from 'uuid';
+import type { PageServerLoad } from './$types';
 
 import { scryptSync, timingSafeEqual } from 'crypto';
 import redis from '$lib/redis';
+import { redirect } from '@sveltejs/kit';
 
 export const actions: Actions = {
 	default: async ({ request, cookies }) => {

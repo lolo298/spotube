@@ -1,4 +1,3 @@
-import { userPreferencesStore } from '$lib/stores';
 import { getUser, getSession, getPreferences } from '$lib/utils/server';
 import { error, type Handle } from '@sveltejs/kit';
 
@@ -7,6 +6,7 @@ import { error, type Handle } from '@sveltejs/kit';
 
 export const handle: Handle = async ({ event, resolve }) => {
 	const sessionId = event.cookies.get('session') || '';
+	let response: Response | null = null;
 
 	try {
 		const session = await getSession(sessionId);
@@ -14,19 +14,32 @@ export const handle: Handle = async ({ event, resolve }) => {
 		if (!user) {
 			throw error(401, 'session not found');
 		}
-		if (!preferences) {
-			preferences = {
-				theme: 'dark'
+
+		const cookiePrefs = event.cookies.get('preferences', {
+			decode: (value) => JSON.parse(decodeURIComponent(value))
+		}) as unknown as UserPreferences;
+
+		preferences = preferences ||
+			cookiePrefs || {
+				theme: 'light'
 			};
-		}
+
 		event.locals.user = user;
 		event.locals.session = session;
 		event.locals.preferences = preferences;
-	} catch {
-		//empty
-	}
 
-	const response = await resolve(event);
+		response = await resolve(event, {
+			transformPageChunk: (chunk) => {
+				//add theme class to html
+				if (chunk.html) {
+					chunk.html = chunk.html.replace('<html', `<html class="${preferences?.theme}"`);
+					return chunk.html;
+				}
+			}
+		});
+	} catch {
+		response = await resolve(event);
+	}
 
 	// if (event.url.pathname.startsWith('/api') && !pathExcluded.includes(event.url.pathname)) {
 	// 	if (session === null) {

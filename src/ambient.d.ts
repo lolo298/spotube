@@ -120,7 +120,7 @@ declare interface Image {
 	width: number;
 }
 
-declare type Theme = 'dark' | 'light';
+declare type Theme = 'dark' | 'light' | '';
 
 declare interface UserPreferences {
 	theme: Theme;

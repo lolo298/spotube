@@ -11,7 +11,17 @@ export const GET: RequestHandler = async ({ cookies }) => {
 			getUser(session),
 			getPreferences(session.userId)
 		]);
-		return json({ user, preferences });
+		const cookiePrefs = cookies.get('preferences', {
+			decode: (value) => JSON.parse(decodeURIComponent(value))
+		}) as unknown as UserPreferences;
+
+		return json({
+			user,
+			preferences: {
+				...preferences,
+				theme: preferences?.theme || cookiePrefs?.theme || 'light'
+			}
+		});
 	} catch (e) {
 		console.log(e);
 		throw error(401, 'session not found');
