@@ -39,7 +39,7 @@ export async function getUser(session: Session) {
 }
 
 export async function getPreferences(userId: string): Promise<UserPreferences> {
-	console.trace('getPreferences: ', userId);
+	// console.trace('getPreferences: ', userId);
 	const preferences = await redis.get(`preferences:${userId}`);
 	if (preferences === null) {
 		return {

@@ -6,7 +6,7 @@
 	import { Sun, Moon } from '$components/icons/';
 	import { browser } from '$app/environment';
 
-	$: console.trace($userPreferencesStore.theme);
+	// $: console.trace($userPreferencesStore.theme);
 
 	$: if (browser) {
 		document.body.classList.remove('light', 'dark');
