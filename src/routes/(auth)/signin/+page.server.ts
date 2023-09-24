@@ -1,5 +1,5 @@
 import prisma from '$lib/prisma';
-import { fail } from '@sveltejs/kit';
+import { ActionFailure, fail } from '@sveltejs/kit';
 import type { Actions } from './$types';
 import { v4 as uuid } from 'uuid';
 
@@ -7,19 +7,44 @@ import { scryptSync, randomBytes } from 'crypto';
 import redis from '$lib/redis';
 import { signinSchema } from '$lib/forms';
 
+type signinActionResult = {
+	success: boolean;
+	data?: {
+		email: string;
+		username: string;
+	};
+	errors?: {
+		email?: string[];
+		username?: string[];
+		password?: string[];
+		passwordConfirm?: string[];
+	};
+	message?: string;
+}
+
+interface formData {
+	email: string;
+	username: string;
+	password: string;
+	passwordConfirm: string;
+}
+
+
 export const actions: Actions = {
-	default: async ({ request, cookies }) => {
+	default: async ({ request, cookies }): Promise<ActionFailure<signinActionResult> | signinActionResult> => {
 		const form = Object.fromEntries(await request.formData());
 		const result = signinSchema.safeParse(form);
-
 		if (!result.success) {
 			const { fieldErrors: errors } = result.error.flatten();
-			const { _password, _passwordConfirm, ...rest } = form;
-			return {
+			const { password, passwordConfirm, ...rest } = form as unknown as formData;
+			console.log({rest, errors});
+			return fail(400, {
+				success: false,
 				data: rest,
 				errors
-			};
+			});
 		}
+		console.log({ success: result.success, data: result.data})
 
 		const data = result.data;
 
@@ -38,11 +63,15 @@ export const actions: Actions = {
 		} catch (e) {
 			return fail(400, {
 				success: false,
-				email: data.email,
-				username: data.username,
+				data: {
+					email: data.email,
+					username: data.username
+				},
 				message: 'User already exists'
 			});
 		}
+
+		console.log({ user });
 		const sessionId = uuid();
 		const session: Session = {
 			userId: user?.id,

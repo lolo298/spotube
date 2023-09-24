@@ -13,6 +13,13 @@ declare global {
 		}
 		// interface Platform {}
 	}
+
+	interface Window {
+		spotify: {
+			callback: (res: Response) => void;
+			handle: () => void;
+		}
+	}
 }
 
 export {};

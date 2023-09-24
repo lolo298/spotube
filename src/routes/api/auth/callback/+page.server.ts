@@ -1,15 +1,20 @@
 import { SPOTIFY_CLIENT_ID, SPOTIFY_CLIENT_SECRET } from '$env/static/private';
 import { queryString } from '$lib';
-import { error, json, redirect } from '@sveltejs/kit';
+import { error, json, redirect, type ServerLoad } from '@sveltejs/kit';
 import { v4 as uuid } from 'uuid';
 import redis from '$lib/redis';
-import { isSpotifyToken } from '$lib/utils/server';
-import type { RequestHandler } from './$types';
+import { getSession, isSpotifyToken } from '$lib/utils/server';
+import { writeFileSync } from 'fs';
+import prisma from '$lib/prisma';
 
-export const GET: RequestHandler = async ({ url, cookies, fetch }) => {
+export const ssr = false;
+
+export const load: ServerLoad = async ({ url, cookies, fetch, locals }) => {
 	const code = url.searchParams.get('code') || '';
 	const state = url.searchParams.get('state') || null;
 	const redirect_uri = `${url.origin}/api/auth/callback`;
+
+	writeFileSync('test.json', JSON.stringify({ code, state, redirect_uri }));
 
 	if (state === null) {
 		throw redirect(307, `/#${queryString.stringify({ error: 'state_mismatch' })}`);
@@ -39,25 +44,33 @@ export const GET: RequestHandler = async ({ url, cookies, fetch }) => {
 	const data: SpotifyToken = await res.json();
 
 	if (!isSpotifyToken(data)) {
-		window.opener.spotify.callback({ success: false, error: 'invalid_token' });
-		window.close();
-		throw error(401, 'session not found');
+		return {
+			success: false,
+			message: 'session not found'
+		};
 	}
 
 	data.expires_at = Date.now() + data.expires_in * 1000;
 
-	const userId = cookies.get('session') || uuid();
-
-	await redis.set(`spotify:${userId}`, JSON.stringify(data), {
-		EX: 60 * 60 * 24 * 7 // 1 week
+	prisma.user.update({
+		where: {
+			id: locals.user.id
+		},
+		data: {
+			Accounts: {
+				create: {
+					type: 'SPOTIFY',
+					refreshToken: data.refresh_token
+				}
+			}
+		}
 	});
 
 	const destination = cookies.get('redirect') || '/';
 	cookies.delete('redirect');
-	window.opener.spotify.callback({ success: true, destination });
-	window.close();
-	return json({
+	return {
 		success: true,
-		message: 'Login successful'
-	});
+		message: 'Login successful',
+		destination
+	};
 };
