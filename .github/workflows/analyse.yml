@@ -20,6 +20,8 @@ jobs:
           echo SPOTIFY_CLIENT_SECRET={{ secrets.SPOTIFY_CLIENT_SECRET }} >> .env
       - name: Install dependencies
         run: bun install
+      - name: Generate prisma client
+        run: bunx prisma generate
       - name: Svelte check
         run: bun run check
       # - name: Install playwright dependencies
