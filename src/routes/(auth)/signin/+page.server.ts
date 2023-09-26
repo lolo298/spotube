@@ -1,15 +1,15 @@
-import prisma from '$lib/prisma';
+import prisma from '$lib/server/prisma';
 import { ActionFailure, fail } from '@sveltejs/kit';
 import type { Actions } from './$types';
 import { v4 as uuid } from 'uuid';
 
 import { scryptSync, randomBytes } from 'crypto';
-import redis from '$lib/redis';
+import redis from '$lib/server/redis';
 import { signinSchema } from '$lib/forms';
 
 type signinActionResult = {
 	success: boolean;
-	data?: {
+	data: {
 		email: string;
 		username: string;
 	};
@@ -20,7 +20,7 @@ type signinActionResult = {
 		passwordConfirm?: string[];
 	};
 	message?: string;
-}
+};
 
 interface formData {
 	email: string;
@@ -29,22 +29,22 @@ interface formData {
 	passwordConfirm: string;
 }
 
-
 export const actions: Actions = {
-	default: async ({ request, cookies }): Promise<ActionFailure<signinActionResult> | signinActionResult> => {
+	default: async ({
+		request,
+		cookies
+	}): Promise<ActionFailure<signinActionResult> | signinActionResult> => {
 		const form = Object.fromEntries(await request.formData());
 		const result = signinSchema.safeParse(form);
 		if (!result.success) {
 			const { fieldErrors: errors } = result.error.flatten();
 			const { password, passwordConfirm, ...rest } = form as unknown as formData;
-			console.log({rest, errors});
 			return fail(400, {
 				success: false,
 				data: rest,
 				errors
 			});
 		}
-		console.log({ success: result.success, data: result.data})
 
 		const data = result.data;
 
@@ -71,7 +71,6 @@ export const actions: Actions = {
 			});
 		}
 
-		console.log({ user });
 		const sessionId = uuid();
 		const session: Session = {
 			userId: user?.id,
@@ -81,6 +80,10 @@ export const actions: Actions = {
 		redis.set(`session:${sessionId}`, JSON.stringify(session), { EX: 60 * 60 * 24 * 7 });
 		cookies.set('session', sessionId);
 
-		return { success: true, message: 'Registration successful' };
+		return {
+			success: true,
+			message: 'Registration successful',
+			data: { email: data.email, username: data.username }
+		};
 	}
 };

@@ -1,4 +1,4 @@
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient, accountType } from '@prisma/client';
 
 class prismaClient {
 	private static _instance: PrismaClient;
@@ -6,7 +6,9 @@ class prismaClient {
 	public counter = 0;
 
 	private constructor() {
+		this.counter++;
 		this.client = new PrismaClient();
+		console.log(this.counter);
 	}
 
 	public static get Instance() {

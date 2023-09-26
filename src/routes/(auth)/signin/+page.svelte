@@ -4,31 +4,37 @@
 	import { Input, Label, Button } from '$components/ui';
 	import type { ActionData } from './$types';
 	import { userPreferencesStore } from '$lib/stores';
+	import type { SubmitFunction } from '@sveltejs/kit';
 
 	export let form: ActionData;
-	$: console.log(form);
 	$: if (form?.success) {
 		goto('/signin/link');
-	} else {
-
 	}
+
+	const handleFormSubmit: SubmitFunction = ({ formElement }) => {
+		const passElement = formElement.elements[2] as HTMLInputElement;
+		const passConfirmElement = formElement.elements[3] as HTMLInputElement;
+
+		passElement.value = '';
+		passConfirmElement.value = '';
+
+		return async ({ update }) => {
+			await update({
+				reset: false
+			});
+		};
+	};
 </script>
 
 <form
-method="POST"
-use:enhance={({ formElement }) =>{
-	console.log(form);
-	return async ({ update }) => {
-		formElement.reset();
-		await update();
-	}
-}}
-class="flex flex-col gap-4 p-6 dark:bg-gray-800 bg-opacity-50 rounded-md w-1/4"
+	method="POST"
+	use:enhance={handleFormSubmit}
+	class="flex flex-col gap-4 p-6 dark:bg-gray-800 bg-opacity-50 rounded-md w-1/4"
 >
-<span class="text-red-500 text-xs">{form?.message ?? ''}</span>
+	<span class="text-red-500 text-xs">{form?.message ?? ''}</span>
 	<div>
 		<Label for="username" class="text-slate-400 text-xs">Username</Label>
-		<Input type="text" name="username" value={form?.data?.username ?? ""} />
+		<Input type="text" name="username" value={form?.data?.username ?? ''} />
 		<Label for="username" class="text-red-500 text-xs">{form?.errors?.username ?? ''}</Label>
 	</div>
 

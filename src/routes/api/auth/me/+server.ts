@@ -23,7 +23,6 @@ export const GET: RequestHandler = async ({ cookies }) => {
 			}
 		});
 	} catch (e) {
-		console.log(e);
 		throw error(401, 'session not found');
 	}
 };

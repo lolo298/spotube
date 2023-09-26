@@ -1,10 +1,10 @@
-import prisma from '$lib/prisma';
+import prisma from '$lib/server/prisma';
 import type { Actions } from './$types';
 import { v4 as uuid } from 'uuid';
 import type { PageServerLoad } from './$types';
 
 import { scryptSync, timingSafeEqual } from 'crypto';
-import redis from '$lib/redis';
+import redis from '$lib/server/redis';
 import { redirect } from '@sveltejs/kit';
 
 export const actions: Actions = {

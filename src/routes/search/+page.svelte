@@ -2,12 +2,16 @@
 	import Track from '$lib/components/Track.svelte';
 	import TrackSkeleton from '$lib/components/TrackSkeleton.svelte';
 	import { asyncDebounce } from '$lib/utils/client';
+	import { onMount } from 'svelte';
+	import type { PageData } from './$types';
+	import Input from '$components/ui/input/Input.svelte';
 
-	let search = '';
+	export let data: PageData;
+
+	let search: string;
 	let page = 1;
 	const debouncedSearch = asyncDebounce(searchSpotify, 500);
 	let promise: Promise<SpotifyTracksSearch>;
-	// export let data;
 
 	$: promise = debouncedSearch(search, page) as Promise<SpotifyTracksSearch>;
 
@@ -15,16 +19,16 @@
 		search: string,
 		page: number
 	): Promise<SpotifyTracksSearch | undefined> {
-		if (!search) return;
+		if (!search) return data.tracks;
 		const res = await fetch(`/api/search?q=${search}&page=${page}`);
-		const data = await res.json();
-		return data;
+		const searchData = await res.json();
+		return searchData.tracks;
 	}
 </script>
 
-<h1>Searching the api</h1>
-<div class="search">
-	<input type="text" bind:value={search} />
+<div class="flex flex-row gap-4 items-center">
+	<h1>Searching the api</h1>
+	<Input type="text" bind:value={search} class="w-80" />
 </div>
 
 {#await promise}
@@ -35,18 +39,19 @@
 		{/each}
 	</div>
 {:then data}
-	{#if data?.tracks.items.length}
-		<div class="trackWrapper">
-			{#each data?.tracks.items as track}
+	{console.log({ data })}
+	{#if data.items.length}
+		<div class="flex flex-col">
+			{#each data.items as track}
 				<Track {track} />
 			{/each}
 		</div>
 
-		{#if data.tracks.previous}
+		{#if data.previous}
 			<button on:click={() => page--}>Previous</button>
 		{/if}
 
-		{#if data.tracks.next}
+		{#if data.next}
 			<button on:click={() => page++}>Next</button>
 		{/if}
 	{:else}
@@ -55,16 +60,3 @@
 {:catch error}
 	<p>Error: {error.message}</p>
 {/await}
-
-<style>
-	.trackWrapper {
-		display: flex;
-		flex-direction: column;
-	}
-
-	.search {
-		display: flex;
-		align-items: center;
-		gap: 1rem;
-	}
-</style>

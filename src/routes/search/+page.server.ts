@@ -12,15 +12,16 @@ export const load: PageServerLoad = async ({ cookies }) => {
 	const spotify = await getSpotifyToken(session.userId);
 
 	// get trending tracks (see: https://charts.spotify.com/home)
-	const res = await fetch('https://api.spotify.com/v1/me/top/tracks?limit=10', {
-		headers: {
-			Authorization: `Bearer ${spotify.access_token}`
+	const res = await fetch(
+		'https://api.spotify.com/v1/me/top/tracks?limit=10&time_range=long_term',
+		{
+			headers: {
+				Authorization: `Bearer ${spotify.access_token}`
+			}
 		}
-	});
-
+	);
 	const data = await res.json();
-
 	return {
-		test: data
+		tracks: data
 	};
 };

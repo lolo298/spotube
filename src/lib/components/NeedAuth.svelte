@@ -1,10 +1,9 @@
 <!-- needAuth.svelte -->
 
 <script lang="ts">
-	import { page } from '$app/stores';
 	import { userStore } from '$lib/stores';
 
-	let user = $userStore;
+	const user = $userStore;
 
 	interface $$Slots {
 		default: {

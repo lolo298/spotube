@@ -2,10 +2,10 @@ import { SPOTIFY_CLIENT_ID, SPOTIFY_CLIENT_SECRET } from '$env/static/private';
 import { queryString } from '$lib';
 import { error, json, redirect, type ServerLoad } from '@sveltejs/kit';
 import { v4 as uuid } from 'uuid';
-import redis from '$lib/redis';
+import redis from '$lib/server/redis';
 import { getSession, isSpotifyToken } from '$lib/utils/server';
 import { writeFileSync } from 'fs';
-import prisma from '$lib/prisma';
+import prisma from '$lib/server/prisma';
 
 export const ssr = false;
 
@@ -46,13 +46,13 @@ export const load: ServerLoad = async ({ url, cookies, fetch, locals }) => {
 	if (!isSpotifyToken(data)) {
 		return {
 			success: false,
+			source: 'site',
 			message: 'session not found'
 		};
 	}
 
 	data.expires_at = Date.now() + data.expires_in * 1000;
-
-	prisma.user.update({
+	const tmp = await prisma.user.update({
 		where: {
 			id: locals.user.id
 		},
@@ -70,6 +70,7 @@ export const load: ServerLoad = async ({ url, cookies, fetch, locals }) => {
 	cookies.delete('redirect');
 	return {
 		success: true,
+		source: 'site',
 		message: 'Login successful',
 		destination
 	};

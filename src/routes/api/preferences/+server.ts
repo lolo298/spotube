@@ -1,4 +1,4 @@
-import redis from '$lib/redis';
+import redis from '$lib/server/redis';
 import { getSession } from '$lib/utils/server';
 import type { RequestHandler } from './$types';
 

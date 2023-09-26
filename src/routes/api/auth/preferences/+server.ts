@@ -1,7 +1,7 @@
 import { error, json } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
 import { isUserPreferences } from '$lib';
-import redis from '$lib/redis';
+import redis from '$lib/server/redis';
 
 export const POST: RequestHandler = async ({ request, locals }) => {
 	const body = await request.json();

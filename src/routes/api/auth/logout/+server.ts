@@ -1,5 +1,5 @@
 import type { RequestHandler } from './$types';
-import redis from '$lib/redis';
+import redis from '$lib/server/redis';
 import { redirect } from '@sveltejs/kit';
 
 export const DELETE: RequestHandler = async ({ cookies }) => {

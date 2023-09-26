@@ -1,10 +1,14 @@
 <script lang="ts">
+	import AccountLink from '$components/AccountLink.svelte';
 	import Button from '$components/ui/button/Button.svelte';
 	import { queryString } from '$lib';
 	import { onMount } from 'svelte';
-	// import type { PageData } from './$types';
+	import type { PageData } from './$types';
+	import { goto } from '$app/navigation';
 
-	// export let data: PageData;
+	export let data: PageData;
+	console.log(data);
+	const linked = data.linkedAccounts;
 
 	const queryParams = queryString.stringify({
 		redirect: '/signin/link'
@@ -14,14 +18,23 @@
 		handle: () => {
 			window.open(`/api/auth/spot?${queryParams}`, 'spotify', 'width=500,height=500');
 		},
-		callback: (res: Response) => {
-			console.log(res);
+		callback: (e: MessageEvent) => {
+			console.log(e);
 		}
 	};
-onMount(() => {
-	window.spotify = spotify;
-});
+
+	console.warn(linked);
 </script>
 
+<AccountLink
+	name="spotify"
+	callback={spotify.callback}
+	linked={linked.find((a) => a.type === data.accountType.SPOTIFY) !== undefined}
+/>
+<AccountLink
+	name="youtube"
+	callback={spotify.callback}
+	linked={linked.find((a) => a.type === data.accountType.YOUTUBE) !== undefined}
+/>
 <Button on:click={spotify.handle}>Link your spotify account</Button>
 <button>Link your youtube account</button>

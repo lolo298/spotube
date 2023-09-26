@@ -4,7 +4,7 @@
 
 	interface $$Props {
 		init?: () => boolean;
-		checked?: boolean;
+		checked: boolean;
 	}
 
 	interface $$Events {

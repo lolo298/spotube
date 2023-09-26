@@ -18,7 +18,7 @@ declare global {
 		spotify: {
 			callback: (res: Response) => void;
 			handle: () => void;
-		}
+		};
 	}
 }
 

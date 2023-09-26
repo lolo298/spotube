@@ -1,8 +1,8 @@
 import { getUser, getSession, getPreferences } from '$lib/utils/server';
-import { error, type Handle } from '@sveltejs/kit';
+import { error, redirect, type Handle } from '@sveltejs/kit';
 
 // const pathExcluded = ['/api/auth/callback', '/api/auth/spot'];
-// const pathNeedsAuth = ['/search'];
+const pathNeedsAuth = ['/search', '/signin/link'];
 
 export const handle: Handle = async ({ event, resolve }) => {
 	const sessionId = event.cookies.get('session') || '';
@@ -38,6 +38,9 @@ export const handle: Handle = async ({ event, resolve }) => {
 			}
 		});
 	} catch {
+		if (pathNeedsAuth.includes(event.url.pathname)) {
+			throw redirect(307, '/login');
+		}
 		response = await resolve(event);
 	}
 

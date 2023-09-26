@@ -1,4 +1,4 @@
-import redis from '$lib/redis';
+import redis from '$lib/server/redis';
 
 export async function getSpotifyUser(sessionId: string): Promise<SpotifyUser> {
 	try {

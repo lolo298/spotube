@@ -50,15 +50,13 @@ declare interface SpotifyUser {
 }
 
 declare interface SpotifyTracksSearch {
-	tracks: {
-		href: string;
-		items: SpotifyTrack[];
-		limit: number;
-		next: string | null;
-		offset: number;
-		previous: string | null;
-		total: number;
-	};
+	href: string;
+	items: SpotifyTrack[];
+	limit: number;
+	next: string | null;
+	offset: number;
+	previous: string | null;
+	total: number;
 }
 
 declare interface SpotifyTrack {
