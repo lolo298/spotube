@@ -19,10 +19,11 @@
 			}
 		},
 		callback: (e: MessageEvent) => {
-			if (!e.data?.source) {
+			if (e.data?.source !== 'site') {
 				return;
 			}
-			// if(e.data.success) linked = true;
+			console.log('callback', e.data.source);
+			if (e.data.success) linked = true;
 			callback(e);
 		}
 	};

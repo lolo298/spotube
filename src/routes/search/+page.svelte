@@ -1,6 +1,5 @@
 <script lang="ts">
-	import Grid from 'svelte-grid';
-	import gridHelp from 'svelte-grid/build/helper/index.mjs';
+	import Grid, { GridItem } from 'svelte-grid-extended';
 	import Track from '$lib/components/Track.svelte';
 	import TrackSkeleton from '$lib/components/TrackSkeleton.svelte';
 	import { asyncDebounce } from '$lib/utils/client';
@@ -35,16 +34,15 @@
 
 {#await promise}
 	<p>Searching...</p>
-	<div class="trackWrapper">
-		{#each Array(10) as _}
+	<div class="flex flex-col gap-4">
+		{#each Array(10) as _, i (i)}
 			<TrackSkeleton />
 		{/each}
 	</div>
 {:then data}
-	{console.log({ data })}
 	{#if data.items.length}
-		<div class="flex flex-col">
-			{#each data.items as track}
+		<div class="flex flex-col gap-4">
+			{#each data.items as track (track.id)}
 				<Track {track} />
 			{/each}
 		</div>

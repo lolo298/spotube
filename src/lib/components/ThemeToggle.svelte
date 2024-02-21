@@ -5,10 +5,12 @@
 	import { Sun, Moon } from '$components/icons/';
 	import { userPreferencesStore } from '$lib/stores';
 	import { get } from 'svelte/store';
+	console.log($userPreferencesStore.theme);
 
 	let checked: boolean = $userPreferencesStore.theme === 'dark';
 
 	$: if (browser) {
+		console.log(checked);
 		if (checked) {
 			$userPreferencesStore.theme = 'dark';
 		} else {

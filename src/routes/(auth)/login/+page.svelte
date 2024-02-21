@@ -5,10 +5,16 @@
 	import type { ActionData } from './$types';
 	import { redirect } from '@sveltejs/kit';
 	import { browser } from '$app/environment';
+	import { userPreferencesStore } from '$lib/stores';
 
 	export let form: ActionData;
 
-	$: browser && form?.success && goto('/');
+	$: if (browser && form?.success) {
+		if (form.prefs) {
+			userPreferencesStore.set(form.prefs);
+		}
+		goto('/');
+	}
 </script>
 
 <form method="POST" use:enhance>

@@ -23,6 +23,15 @@
 		}
 	};
 
+	const youtube = {
+		handle: () => {
+			window.open(`/api/auth/spot?${queryParams}`, 'spotify', 'width=500,height=500');
+		},
+		callback: (e: MessageEvent) => {
+			console.log(e);
+		}
+	};
+
 	console.warn(linked);
 </script>
 
@@ -33,8 +42,6 @@
 />
 <AccountLink
 	name="youtube"
-	callback={spotify.callback}
+	callback={youtube.callback}
 	linked={linked.find((a) => a.type === data.accountType.YOUTUBE) !== undefined}
 />
-<Button on:click={spotify.handle}>Link your spotify account</Button>
-<button>Link your youtube account</button>

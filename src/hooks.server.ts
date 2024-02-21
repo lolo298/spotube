@@ -11,28 +11,32 @@ export const handle: Handle = async ({ event, resolve }) => {
 	try {
 		const session = await getSession(sessionId);
 		let [user, preferences] = await Promise.all([getUser(session), getPreferences(session.userId)]);
-		if (!user) {
-			throw error(401, 'session not found');
-		}
 
 		const cookiePrefs = event.cookies.get('preferences', {
 			decode: (value) => JSON.parse(decodeURIComponent(value))
 		}) as unknown as UserPreferences;
-
 		preferences = preferences ||
 			cookiePrefs || {
 				theme: 'light'
 			};
 
+		event.locals.preferences = preferences;
+
+		if (!user) {
+			throw error(401, 'session not found');
+		}
+
 		event.locals.user = user;
 		event.locals.session = session;
-		event.locals.preferences = preferences;
 
 		response = await resolve(event, {
 			transformPageChunk: (chunk) => {
 				//add theme class to html
 				if (chunk.html) {
-					chunk.html = chunk.html.replace('<html', `<html class="${preferences?.theme}"`);
+					chunk.html = chunk.html.replace(
+						'<html',
+						`<html class="${event.locals.preferences?.theme}"`
+					);
 					return chunk.html;
 				}
 			}
@@ -41,7 +45,22 @@ export const handle: Handle = async ({ event, resolve }) => {
 		if (pathNeedsAuth.includes(event.url.pathname)) {
 			throw redirect(307, '/login');
 		}
-		response = await resolve(event);
+		if (event.locals?.preferences) {
+			response = await resolve(event, {
+				transformPageChunk: (chunk) => {
+					//add theme class to html
+					if (chunk.html) {
+						chunk.html = chunk.html.replace(
+							'<html',
+							`<html class="${event.locals.preferences?.theme}"`
+						);
+						return chunk.html;
+					}
+				}
+			});
+		} else {
+			response = await resolve(event);
+		}
 	}
 
 	// if (event.url.pathname.startsWith('/api') && !pathExcluded.includes(event.url.pathname)) {

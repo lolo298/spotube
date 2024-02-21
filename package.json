@@ -52,7 +52,7 @@
 		"lucide-svelte": "^0.268.0",
 		"radix-svelte": "^0.9.0",
 		"redis": "^4.6.7",
-		"svelte-grid": "^5.1.2",
+		"svelte-grid-extended": "^1.1.1",
 		"tailwind-merge": "^1.14.0",
 		"tailwindcss-animate": "^1.0.6",
 		"uuid": "^9.0.0",

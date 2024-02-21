@@ -3,7 +3,14 @@
 </script>
 
 <div class="track">
-	<img src={track.album.images[2].url} alt={track.name} />
+	<div class="relative">
+		<img
+			src="/Spotify_Icon_RGB_Green.png"
+			alt="spotify"
+			class="absolute w-3 aspect-square bottom-0 right-0 bg-white rounded-full"
+		/>
+		<img src={track.album.images[2].url} alt={track.name} class="w-12 aspect-square rounded-lg" />
+	</div>
 	<div class="text">
 		{#if track.explicit}
 			<span>EXPLICIT</span>
@@ -17,12 +24,6 @@
 		display: flex;
 		align-items: center;
 		gap: 1rem;
-	}
-
-	img {
-		border-radius: 15%;
-		width: 50px;
-		height: 50px;
 	}
 
 	.text {

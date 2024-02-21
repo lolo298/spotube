@@ -8,7 +8,7 @@ import redis from '$lib/server/redis';
 import { redirect } from '@sveltejs/kit';
 
 export const actions: Actions = {
-	default: async ({ request, cookies }) => {
+	default: async ({ request, cookies, locals }) => {
 		const form = await request.formData();
 		const login = form.get('username')?.toString();
 		const password = form.get('password')?.toString();
@@ -58,7 +58,8 @@ export const actions: Actions = {
 
 		return {
 			success: true,
-			message: 'Login successful'
+			message: 'Login successful',
+			prefs: locals.preferences
 		};
 	}
 };
